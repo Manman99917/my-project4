@@ -1,0 +1,58 @@
+<view class="calendar-page" bindtouchstart="onTouchStart" bindtouchend="onTouchEnd">
+  <!-- 月份切换 -->
+  <view class="month-header">
+    <view class="arrow" bindtap="onPrevMonth">◀</view>
+    <text class="month-title">{{year}}年{{month}}月</text>
+    <view class="arrow" bindtap="onNextMonth">▶</view>
+  </view>
+
+  <!-- 星期标题 -->
+  <view class="weekday-row">
+    <view class="weekday-cell" wx:for="{{weekdays}}" wx:key="*this">
+      <text>{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 日期格子 -->
+  <view class="days-grid {{slideAnim}}">
+    <view
+      class="day-cell {{item.empty ? 'empty' : ''}} {{item.day === selectedDay ? 'selected' : ''}}"
+      wx:for="{{days}}"
+      wx:key="index"
+      bindtap="onDayTap"
+      data-day="{{item.day}}"
+    >
+      <text class="day-number">{{item.day}}</text>
+      <view class="day-icons" wx:if="{{item.icons.length > 0}}">
+        <text class="day-icon" wx:for="{{item.icons}}" wx:for-item="icon" wx:key="*this">{{icon}}</text>
+        <text class="day-more" wx:if="{{item.hasMore}}">+</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部随机文案 -->
+  <view class="bottom-quote">
+    <text class="quote-text">{{bottomQuote}}</text>
+  </view>
+
+  <!-- 点击日期后的详情弹窗 -->
+  <view class="detail-mask" wx:if="{{selectedDay}}" bindtap="onCloseDetail">
+    <view class="detail-panel" catchtap="">
+      <view class="detail-header">
+        <text class="detail-title">{{month}}月{{selectedDay}}日 记录</text>
+        <view class="detail-close" bindtap="onCloseDetail">✕</view>
+      </view>
+      <view class="detail-list" wx:if="{{selectedRecords.length > 0}}">
+        <view class="detail-item" wx:for="{{selectedRecords}}" wx:key="index">
+          <text class="detail-icon">{{item.icon}}</text>
+          <text class="detail-label">{{item.label}}</text>
+          <text class="detail-time">{{item.time}}</text>
+          <view class="detail-delete" catchtap="onDeleteRecord" data-index="{{index}}">删除</view>
+        </view>
+      </view>
+      <view class="detail-empty" wx:else>
+        <text>当天没有记录</text>
+      </view>
+    </view>
+  </view>
+</view>

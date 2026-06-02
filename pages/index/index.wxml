@@ -1,0 +1,160 @@
+<view class="page-wrapper">
+  <!-- 上半部分：可滚动的事项列表 -->
+  <scroll-view class="events-scroll" scroll-y>
+    <view class="events-container">
+      <!-- 事项卡片列表 -->
+      <view
+        class="module {{item.bgPattern}}"
+        style="background: {{item.bgGradient}};"
+        wx:for="{{eventInfos}}"
+        wx:key="id"
+        bindtap="onEventTap"
+        bindlongpress="onEventLongPress"
+        data-id="{{item.id}}"
+      >
+        <view class="module-header">
+          <text class="module-icon">{{item.icon}}</text>
+          <text class="module-title">{{item.name}}</text>
+        </view>
+        <view class="record-info">
+          <text class="last-time">上次：{{item.lastTimeFormatted}}</text>
+          <text class="interval">距今：{{item.intervalText}}</text>
+          <text class="hint" wx:if="{{item.hint}}">{{item.hint}}</text>
+        </view>
+      </view>
+
+      <!-- 添加事项按钮 -->
+      <view class="add-btn" bindtap="onShowAdd">
+        <text class="add-btn-text">+ 添加事项</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 下半部分：固定的吉祥物装饰 -->
+  <view class="mascot-section" bindtap="onMascotTap">
+    <image class="mascot-img" src="{{mascotImage}}" mode="aspectFit"></image>
+    <view class="mascot-bubble">
+      <text class="mascot-text">{{mascotQuote}}</text>
+    </view>
+  </view>
+
+  <!-- 打卡确认弹窗 -->
+  <view class="modal-mask" wx:if="{{showCheckIn}}" bindtap="onCloseCheckIn">
+    <view class="modal-panel checkin-panel" catchtap="">
+      <text class="checkin-icon">{{checkInEvent.icon}}</text>
+      <text class="checkin-name">{{checkInEvent.name}}</text>
+      <view class="checkin-btn" catchtap="onConfirmCheckIn">打卡</view>
+      <view class="checkin-setting" catchtap="onShowEdit">设置提醒间隔</view>
+    </view>
+  </view>
+
+  <!-- 编辑事项弹窗 -->
+  <view class="modal-mask" wx:if="{{showEditModal}}" catchtap="">
+    <view class="modal-panel" catchtap="">
+      <view class="modal-title">编辑事项</view>
+
+      <view class="form-item">
+        <text class="form-label">名称</text>
+        <input class="form-input" placeholder="例如：喝水、运动" bindinput="onEditNameInput" value="{{editName}}" />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">提醒间隔（小时）</text>
+        <input class="form-input" type="number" placeholder="24" bindinput="onEditThresholdInput" value="{{editThreshold}}" />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">选择图标</text>
+        <view class="emoji-grid">
+          <view
+            class="emoji-option {{editIcon === item ? 'emoji-selected' : ''}}"
+            wx:for="{{emojiOptions}}"
+            wx:key="*this"
+            catchtap="onEditPickEmoji"
+            data-emoji="{{item}}"
+          >
+            <text>{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">背景样式</text>
+        <scroll-view class="bg-scroll" scroll-y>
+          <view class="bg-grid">
+            <view
+              class="bg-option {{editBgStyle === item.id ? 'bg-selected' : ''}}"
+              wx:for="{{bgStyles}}"
+              wx:key="id"
+              catchtap="onEditPickBg"
+              data-bg="{{item.id}}"
+              style="background: {{item.gradient}};"
+            >
+              <text class="bg-name">{{item.name}}</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view class="modal-actions">
+        <view class="modal-btn cancel" catchtap="onCloseEdit">取消</view>
+        <view class="modal-btn confirm" catchtap="onConfirmEdit">保存</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加事项弹窗 -->
+  <view class="modal-mask" wx:if="{{showAddModal}}" catchtap="">
+    <view class="modal-panel" catchtap="">
+      <view class="modal-title">添加新事项</view>
+
+      <view class="form-item">
+        <text class="form-label">名称</text>
+        <input class="form-input" placeholder="例如：喝水、运动" bindinput="onNameInput" value="{{newName}}" />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">提醒间隔（小时）</text>
+        <input class="form-input" type="number" placeholder="24" bindinput="onThresholdInput" value="{{newThreshold}}" />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">选择图标</text>
+        <view class="emoji-grid">
+          <view
+            class="emoji-option {{newIcon === item ? 'emoji-selected' : ''}}"
+            wx:for="{{emojiOptions}}"
+            wx:key="*this"
+            catchtap="onPickEmoji"
+            data-emoji="{{item}}"
+          >
+            <text>{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">背景样式</text>
+        <scroll-view class="bg-scroll" scroll-y>
+          <view class="bg-grid">
+            <view
+              class="bg-option {{newBgStyle === item.id ? 'bg-selected' : ''}}"
+              wx:for="{{bgStyles}}"
+              wx:key="id"
+              catchtap="onPickBg"
+              data-bg="{{item.id}}"
+              style="background: {{item.gradient}};"
+            >
+              <text class="bg-name">{{item.name}}</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view class="modal-actions">
+        <view class="modal-btn cancel" catchtap="onCloseAdd">取消</view>
+        <view class="modal-btn confirm" catchtap="onConfirmAdd">确定</view>
+      </view>
+    </view>
+  </view>
+</view>

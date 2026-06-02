@@ -1,0 +1,19 @@
+# 微信小程序
+project.private.config.json
+
+# 开发工具
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 日志
+*.log
+
+# 临时文件
+.tmp/
+.cache/
+
+# Node modules (如果使用)
+node_modules/
