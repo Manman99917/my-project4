@@ -2,6 +2,35 @@
 
 一款可爱的习惯打卡记录小程序，帮助你养成良好的生活习惯。
 
+## 📱 界面展示
+
+### 主界面
+事项列表 + 可爱的吉祥物"嘟嘟"陪伴
+
+<img src="images.show/主界面.png" width="300" alt="主界面">
+
+### 打卡界面
+一键打卡，确认后记录
+
+<img src="images.show/打卡界面.png" width="300" alt="打卡界面">
+
+### 自定义事项
+14种精美背景样式随心选
+
+<img src="images.show/自定义事项界面.png" width="300" alt="自定义事项界面">
+
+### 日历界面
+月视图查看打卡记录
+
+<img src="images.show/日历界面.png" width="300" alt="日历界面">
+
+### 日历详情
+点击日期查看当天记录
+
+<img src="images.show/日历查看界面.png" width="300" alt="日历查看界面">
+
+---
+
 ## 功能特性
 
 ### 📝 事项管理
@@ -71,6 +100,7 @@ project2-事项提醒/
 │   └── constants.js        # 常量定义
 ├── images/                 # tabBar 图标
 ├── images2/                # 吉祥物图片
+├── images.show/            # 界面截图
 ├── app.js
 ├── app.json
 ├── app.wxss
